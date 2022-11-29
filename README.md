@@ -93,26 +93,6 @@ python3 fakemt.py
 ```
 
 
-## grmchk.py
-
-문장의 문법을 검사합니다.
-
-사용 예:
-
-```
-$ echo "양자 알고리즘의 제시되었다." | grmchk.py
-Trying to import KoNLPy...
-Loading rule file: ko_grammar.json...
-양자 알고리즘의 제시되었다.
-
-     ^
-   => 알고리즘의 제시되었다 →  알고리즘이 제시되었다	 (0167020a_주어-술어 호응 : https://wikidocs.net/167020#a)
-
-=== Summary ===
-0167020a_주어-술어 호응 ==> count: 1
-```
-
-
 ## hae.py
 
 텍스트를 입력받아서 해체로 바꿔줍니다.
