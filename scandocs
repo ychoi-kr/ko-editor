@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# adapted from scandocs(https://stackoverflow.com/a/14537727)
+
+echo -e "\n
+Welcome to scandocs. This will search .doc AND .docx files in this directory for a given string. \n
+Type in the text string you want to find... \n"
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    doc_to_text='catdoc'
+    docx_to_text='docx2txt <'
+
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    doc_to_text='textutil -stdout -cat txt'
+    docx_to_text='textutil -stdout -cat txt'
+
+#elif [[ "$OSTYPE" == "cygwin" ]]; then
+        # POSIX compatibility layer and Linux environment emulation for Windows
+#elif [[ "$OSTYPE" == "msys" ]]; then
+        # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+#elif [[ "$OSTYPE" == "win32" ]]; then
+        # I'm not sure this can happen.
+#elif [[ "$OSTYPE" == "freebsd"* ]]; then
+        # ...
+#else
+        # Unknown.
+fi
+
+read response
+find . -name "*.doc" -maxdepth 1 | 
+    while read i; do $doc_to_text "$i" | 
+        grep --color=auto -iH --label="$i" "$response"; done
+find . -name "*.docx" -maxdepth 1 | 
+    while read i; do $docx_to_text "$i" | 
+        grep --color=auto -iH --label="$i" "$response"; done
