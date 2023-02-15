@@ -25,27 +25,32 @@ def _resize_images_in_zipfile(zip_path, scale):
     out_zip_path = os.path.splitext(in_zip_path)[0] + '_mini.docx'
 
     working_dir = os.getcwd()
-    with tempfile.TemporaryDirectory() as tmpdir:
-        os.chdir(tmpdir)
-        tmp_zip_path = os.path.join(tmpdir, os.path.basename(in_zip_path))
-        tmp_zip = zipfile.ZipFile(tmp_zip_path, 'w')
+    tmpdir = tempfile.TemporaryDirectory()
+    os.chdir(tmpdir.name)
+    tmp_zip_path = os.path.join(tmpdir.name, os.path.basename(in_zip_path))
+    tmp_zip = zipfile.ZipFile(tmp_zip_path, 'w')
+
+    for item in input_zip.infolist():
+        filename = item.filename
+        if filename.startswith('word/media/') and filename.split('.')[-1] in ['jpg', 'png']:
+            input_zip.extract(item)
+            img = Image.open(filename)
+            resized_img = img.resize(
+                (int(img.width * scale), int(img.height * scale))
+            )
+            resized_img.save(filename)
+            tmp_zip.write(filename)
+        else:
+            tmp_zip.writestr(item, input_zip.read(filename))
     
-        for item in input_zip.infolist():
-            filename = item.filename
-            if filename.startswith('word/media/') and filename.split('.')[-1] in ['jpg', 'png']:
-                input_zip.extract(item)
-                img = Image.open(filename)
-                resized_img = img.resize(
-                    (int(img.width * scale), int(img.height * scale))
-                )
-                resized_img.save(filename)
-                tmp_zip.write(filename)
-            else:
-                tmp_zip.writestr(item, input_zip.read(filename))
-        
-        input_zip.close()
-        tmp_zip.close()
-        shutil.copy(tmp_zip_path, out_zip_path)
+    input_zip.close()
+    tmp_zip.close()
+    shutil.copy(tmp_zip_path, out_zip_path)
+    
+    try:
+        tmpdir.cleanup()
+    except:
+        pass  # for Windows
 
 
 if __name__ == '__main__':
