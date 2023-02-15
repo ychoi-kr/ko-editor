@@ -17,6 +17,7 @@
    * [comments.py](#commentspy) : doc 파일의 메모 목록을 엑셀 시트에 작성 (Windows 전용)
    * [doc2docx.py](#doc2docxpy) : doc 파일을 docx 파일로 일괄 변환 (Windows 전용)
    * [exfigs.py](#exfigspy) : docx 파일에서 이미지 파일을 일괄 추출
+   * [minidocx.py](#minidocxpy) : docx 파일 크기를 줄임
    * [openall.py](#openallpy) : 현재 경로의 모든 docx 파일을 열기 (Windows 전용)
    * [pgcnt.py](#pgcntpy): docx 파일의 페이지 수 세기
    * [termlist.py](#termlistpy) : docx 파일에 국영문 병기된 용어의 목록을 출력
@@ -149,6 +150,20 @@ $ python mvfig.py
 
 $ ls
 fig_list.tsv    '그림 1.1 개인, 기관, 외국인 주식투자 수익률 비교.png'    '그림 1.2 개인투자자 1인당 보유 종목 수.jpg'    mvfig.py
+```
+
+
+## minidocx.py
+
+docx 파일에 들어 있는 이미지 품질을 낮춰서 docx 파일 크기를 줄입니다. `파일명_mini.docx` 파일이 만들어집니다.
+
+사용 예:
+
+```
+$ minidocx.py example.docx
+$ ls -l *.docx
+-rw-r--r--@ 1 yong  staff  27854094  2 15 23:14 example.docx
+-rw-r--r--@ 1 yong  staff   4318580  2 15 23:12 example_mini.docx
 ```
 
 
