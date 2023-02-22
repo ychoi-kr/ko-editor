@@ -23,7 +23,7 @@
    * [termlist.py](#termlistpy) : docx 파일에 국영문 병기된 용어의 목록을 출력
 
 * 파일 관리
-   * [mvfig.py](#mvfigpy) : 그림 파일명 일괄 변경
+   * [rename.py](#renamepy) : 파일명 및 디렉터리명 일괄 변경
    * [today.py](#todaypy) : 파일명의 날짜를 일괄 변경
 
 * PDF
@@ -124,32 +124,32 @@ ROC 곡선은 이상적인 모델에서는 이처럼 원점에서 수직으로 �
 텍스트를 입력받아서 하십시오체로 바꿔줍니다.
 
 
-## mvfig.py
+## rename.py
 
-그림 파일들의 파일명을 일괄 변경합니다.
+파일(및 디렉터리) 이름을 일괄 변경합니다.
 
-변경 전 파일명과 변경 후 파일명을 나열하는 Tab-Separated Values 파일인 `fig_list.tsv`를 작성해야 합니다.
+변경 전 파일명과 변경 후 파일명을 나열하는 Tab-Separated Values 파일(`rename.tsv`)을 작성해야 합니다.
 
 예:
 
 ```
-$ cat fig_list.tsv
+$ cat rename.tsv
 image1	그림 1.1 개인, 기관, 외국인 주식투자 수익률 비교
 image2	그림 1.2 개인투자자 1인당 보유 종목 수
 ```
 
-`fig_list.tsv`의 각 행에 대하여, 첫 번째 열의 이름을 두 번째 열의 이름으로 바꿉니다. 확장자는 기존 파일의 것이 유지됩니다.
+`rename.tsv`의 각 행에 대하여, 첫 번째 열의 이름을 두 번째 열의 이름으로 바꿉니다. 확장자를 생략할 경우, 기존 파일의 확장자가 유지됩니다.
 
 실행 예:
 
 ```
 $ ls 
-fig_list.tsv    image1.png    image2.jpg    mvfig.py
+rename.tsv    image1.png    image2.jpg
 
-$ python mvfig.py
+$ python rename.py
 
 $ ls
-fig_list.tsv    '그림 1.1 개인, 기관, 외국인 주식투자 수익률 비교.png'    '그림 1.2 개인투자자 1인당 보유 종목 수.jpg'    mvfig.py
+rename.tsv    '그림 1.1 개인, 기관, 외국인 주식투자 수익률 비교.png'    '그림 1.2 개인투자자 1인당 보유 종목 수.jpg'
 ```
 
 
