@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import convert_speech_level
 
 sentence = input()
