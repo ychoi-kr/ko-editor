@@ -21,7 +21,10 @@ def load(fp, level):
         
         for src_idx in src_idx_list:
             if col[src_idx] != '' and col[dst_idx] != '':
-                tt.append((col[src_idx], col[dst_idx]))
+                tt.append((
+                    col[src_idx].split('->')[0],
+                    col[dst_idx].split('->')[-1]
+                ))
     return tt
 
 def convert(sentence, level):
@@ -57,6 +60,7 @@ def convert(sentence, level):
     for src, dst in tt:
         for sb in " ,.!?":
             sentence = sentence.replace(src + sb, dst + sb)
+        sentence = sentence.replace(src + ':', dst + '.')
 
     return sentence
 
