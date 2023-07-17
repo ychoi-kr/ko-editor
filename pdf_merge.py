@@ -2,10 +2,14 @@ import argparse
 from glob import glob
 import os
 
-from PyPDF2 import PdfFileMerger
+try:
+    from PyPDF2 import PdfMerger as Merger
+except ImportError:
+    from PyPDF2 import PdfFileMerger as Merger
+
 
 def main(book_title, directory, sub_dir='merged'):
-    merger = PdfFileMerger()
+    merger = Merger()
     
     for f in glob(f"{directory}/{book_title}*.pdf"):
         merger.append(f)
