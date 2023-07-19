@@ -2,6 +2,9 @@ import argparse
 from glob import glob
 import os
 
+from natsort import natsorted
+
+
 try:
     from PyPDF2 import PdfMerger as Merger
 except ImportError:
@@ -14,7 +17,7 @@ def main(book_title, directory, sub_dir='merged'):
     merger = Merger()
     current_page = 0
     
-    for f in glob(f"{directory}/{book_title}*.pdf"):
+    for f in natsorted(glob(f"{directory}/{book_title}*.pdf")):
         reader = PdfFileReader(f)
         bookmark_title = os.path.splitext(os.path.basename(f))[0]
         merger.append(f)
