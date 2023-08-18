@@ -14,7 +14,7 @@ site = "https://www.aladin.co.kr"
 
 
 def reviewlist(info, csv, order=None, showurl=None):
-    return commentReviewList(info, csv, showurl) + myReviewList(info, csv, showurl)
+    return commentReviewList(info, 1, csv, showurl) + commentReviewList(info, 0, csv, showurl) + myReviewList(info, 2, csv, showurl) + myReviewList(info, 0, csv, showurl)
 
 
 def main(itemid_list, csv, noheader, order=None, showurl=None):
@@ -29,7 +29,7 @@ def bookinfo(itemid, showurl):
     html = spider.readurl(url)
     soup = BeautifulSoup(html, 'html.parser')
     
-    title = soup.select_one("a.Ere_bo_title").text
+    title = soup.select_one("span.Ere_bo_title").text
     ebook = False
     if ebook:
         title = '[ebook] ' + title
@@ -37,7 +37,7 @@ def bookinfo(itemid, showurl):
     li = soup.select_one("li.Ere_sub2_title")
     ap = li.select("a.Ere_sub2_title")
     authors = ','.join([a.text for a in ap[:-1]])
-    publisher = ap[-1]
+    publisher = ap[-1].text
     pubdate = re.search(r"\d{4}-\d{2}-\d{2}", li.text).group()
 
     return {
@@ -49,23 +49,24 @@ def bookinfo(itemid, showurl):
     }
 
 
-def myReviewList(info, csv, showurl):
+def myReviewList(info, orderer, csv, showurl):
+    '''마이리뷰'''
     result = []
 
     qrylist = [
-        ("ProductItemId", info["itemid"]),
+        #("ProductItemId", info["itemid"]),
         ("itemId", info["itemid"]),
-        ("pageCount", "5"),
+        #("pageCount", "5"),
         ("communitytype", "MyReview"),
-        ("nemoType", "-1"),
-        ("page", "1"),
-        ("startNumber", "1"),
-        ("endNumber", "10"),
-        ("sort", "1"),
-        ("IsOrderer", "1"),
-        ("BranchType", "1"),
-        ("IsAjax", "true"),
-        ("pageType", "0")
+        #("nemoType", "-1"),
+        #("page", "1"),
+        #("startNumber", "1"),
+        #("endNumber", "10"),
+        #("sort", "1"),
+        ("IsOrderer", str(orderer)),  # 2: 구매자, 0: 비구매자
+        #("BranchType", "1"),
+        #("IsAjax", "true"),
+        #("pageType", "0")
     ]
 
     qrystr = parse.urlencode(qrylist)
@@ -94,25 +95,26 @@ def myReviewList(info, csv, showurl):
         })
         
     return result
-   
 
-def commentReviewList(info, csv, showurl):
+
+def commentReviewList(info, orderer, csv, showurl):
+    '''100자평'''
     result = []
 
     qrylist = [
-        ("ProductItemId", info["itemid"]),
+        #("ProductItemId", info["itemid"]),
         ("itemId", info["itemid"]),
-        ("pageCount", "5"),
+        #("pageCount", "5"),
         ("communitytype", "CommentReview"),
-        ("nemoType", "-1"),
-        ("page", "1"),
-        ("startNumber", "1"),
-        ("endNumber", "10"),
-        ("sort", "1"),
-        ("IsOrderer", "1"),
-        ("BranchType", "1"),
-        ("IsAjax", "true"),
-        ("pageType", "0")
+        #("nemoType", "-1"),
+        #("page", "1"),
+        #("startNumber", "1"),
+        #("endNumber", "10"),
+        #("sort", "1"),
+        ("IsOrderer", str(orderer)),  # 1: 구매자, 0: 비구매자
+        #("BranchType", "1"),
+        #("IsAjax", "true"),
+        #("pageType", "0")
     ]
 
     qrystr = parse.urlencode(qrylist)
