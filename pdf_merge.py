@@ -1,5 +1,5 @@
 import argparse
-from glob import glob
+import re
 import os
 
 from natsort import natsorted
@@ -17,7 +17,11 @@ def main(book_title, directory, sub_dir='merged'):
     merger = Merger()
     current_page = 0
     
-    for f in natsorted(glob(f"{directory}/{book_title}*.pdf")):
+    pattern = re.compile(rf'{re.escape(book_title)}.*\.pdf')
+    file_list = [file for file in os.listdir(directory) if pattern.match(file)]
+    sorted_file_list = natsorted(file_list)
+
+    for f in sorted_file_list:
         reader = PdfFileReader(f)
         bookmark_title = os.path.splitext(os.path.basename(f))[0]
         merger.append(f)
