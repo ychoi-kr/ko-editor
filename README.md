@@ -46,10 +46,8 @@
 <a name="requirements"></a>
 ## 공통 요구사항
 
-1. Python3가 설치되어 있어야 합니다.
-2. 다음 명령을 실행해 필요한 패키지를 설치합니다.
-
-    `pip install -r requirements.txt`
+- Python3가 설치되어 있어야 합니다.
+- 저장소 경로를 PATH 환경 변수에 등록하는 것이 좋습니다.
 
 팁:
 - [파이썬 3 설치](https://wikidocs.net/44)
@@ -60,6 +58,7 @@
 
 현재 디렉터리의 모든 `.docx` 파일의 메모를 엑셀 시트에 작성합니다. (Windows 전용)
 
+소개 영상: https://youtu.be/WoCyzFGbb9A
 
 ## doc2docx.py
 
