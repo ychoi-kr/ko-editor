@@ -53,6 +53,17 @@
 - [파이썬 3 설치](https://wikidocs.net/44)
 - [윈도우 CMD에서 파이썬 활용 팁](https://wikidocs.net/124333)
 
+### 파이썬 패키지 설치
+
+```
+pip install -r requirements.txt
+```
+
+Windows용 스크립트를 사용하려면 pywin32도 필요합니다.
+
+```
+pip install pywin32
+```
 
 ## comments.py
 
