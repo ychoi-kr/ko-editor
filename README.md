@@ -14,7 +14,8 @@
    * indian.py, indiantree.py : 영문으로 표기된 인도어를 한국어로 표기
 
 * 마이크로소프트 워드
-   * [comments.py](#commentspy) : doc 파일의 메모 목록을 엑셀 시트에 작성 (Windows 전용)
+   * [codelist.py](#codelistpy) : docx 파일에서 예제 코드 목록을 추출
+   * [comments.py](#commentspy) : docx 파일의 메모 목록을 엑셀 시트에 작성 (Windows 전용)
    * [doc2docx.py](#doc2docxpy) : doc 파일을 docx 파일로 일괄 변환 (Windows 전용)
    * [exfigs.py](#exfigspy) : docx 파일에서 이미지 파일을 일괄 추출
    * [minidocx.py](#minidocxpy) : docx 파일 크기를 줄임
@@ -63,6 +64,16 @@ Windows용 스크립트를 사용하려면 pywin32도 필요합니다.
 
 ```
 pip install pywin32
+```
+
+## codelist.py
+
+docx 파일에서 예제 코드 목록을 추출해 codelist.tsv 파일에 저장합니다.
+
+사용법:
+
+```
+python codelist.py filename.docx
 ```
 
 ## comments.py
