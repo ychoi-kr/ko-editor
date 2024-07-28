@@ -1,12 +1,13 @@
 import os
 import sys
+from common_io import read_file, write_file, get_file_paths_from_args
 
 def load(fp, level, src_che=None):
     src_idx = ['hasipsio', 'haeyo', 'haera', 'hae'].index(src_che) if src_che else None
 
     tt = list()
 
-    for line in fp.readlines()[1:]:
+    for line in fp[1:]:
         col = line.rstrip().split(',')  # hasipsio, haeyo, haera, hae
         if level == 'hasipsio':
             src_idx_list = [src_idx] if src_che else [1, 2, 3]
@@ -31,12 +32,10 @@ def load(fp, level, src_che=None):
 
 def convert(sentence, level, src_che=None):
 
-    fp = open(
+    fp = read_file(
             os.path.join(os.path.dirname(os.path.realpath(__file__)),
             'ko_speech_level.txt'
-        ),
-        "rt",
-        encoding="UTF8"
+        )
     )
     
     tt = load(fp, level, src_che)
@@ -60,3 +59,11 @@ def haera(sentence, src_che=None):
 def hae(sentence, src_che=None):
     return convert(sentence, 'hae', src_che)
 
+if __name__ == "__main__":
+    input_file, output_file = get_file_paths_from_args()
+    content = read_file(input_file)
+    level = "haeyo"  # 원하는 레벨로 변경
+    src_che = None   # 필요 시 원하는 src_che 값으로 변경
+
+    converted_content = [convert(line, level, src_che) for line in content]
+    write_file(output_file, converted_content)
