@@ -34,6 +34,7 @@
    * [searchable.py](#searchablepy) : 검색 가능한 PDF 파일을 생성
 
 * 웹
+   * [urlchk.py](#urlchkpy) : 텍스트에서 URL을 추출하고 접근 가능성을 테스트
    * wikidocs.py : 위키독스 책의 목차 및 본문 추출
    * wikipedia.py : 위키백과의 본문 추출
 
@@ -435,4 +436,34 @@ VB.NET                                             1
 ## today.py
 
 현재 디렉터리의 모든 `.docx` 파일의 파일명에서 YYYYMMDD 형식으로 된 부분을 오늘 날짜로 바꿉니다. (Windows 전용)
+
+## urlchk.py
+
+텍스트에서 URL을 추출하고 접근 가능성을 테스트합니다.
+
+요구사항:
+
+```
+pip install docx2txt
+```
+
+사용법:
+
+```
+python urlchk.py [파일명] [옵션]
+```
+
+- `python urlchk.py` : 표준 입력에서 URL을 추출하고 테스트
+- `python urlchk.py document.txt` : 텍스트 파일에서 URL 추출 및 테스트
+- `python urlchk.py document.docx` : Word 문서에서 URL 추출 및 테스트
+- `python urlchk.py document.txt -o results.txt` : 결과를 파일에 저장
+- `python urlchk.py document.txt --urls-only` : URL만 추출 (접근 테스트 없이)
+- `python urlchk.py document.txt -t 30` : 타임아웃을 30초로 설정
+
+주요 기능:
+
+- 한국어 조사가 붙은 URL 처리 (예: `https://example.com에서` → `https://example.com`)
+- 영문 문장 끝 구두점 제거 (예: `Visit https://example.com.` → `https://example.com`)
+- HTTP 상태 코드 및 Content-Type 정보 표시
+- 성공/실패 통계 요약 제공
 
