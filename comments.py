@@ -61,5 +61,5 @@ wb = excel.Workbooks.Add()
 ws = wb.Worksheets("sheet1")
 for i, row in enumerate(comments, start=1):
     for j, v in enumerate(row, start=1):
-        ws.cells(i, j).Value = v
+        ws.Cells(i, j).Value = v
 
