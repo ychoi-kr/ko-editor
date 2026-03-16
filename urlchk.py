@@ -15,39 +15,60 @@ import docx2txt
 
 def extract_urls(text):
     """텍스트에서 URL을 추출합니다."""
-    # URL 정규식 패턴 (http, https, ftp 등을 포함)
-    url_pattern = r'https?://[^\s<>"{}|\\^`\[\]]+'
-    raw_urls = re.findall(url_pattern, text)
+    url_positions = []
     
-    # 한국어 조사 제거
+    # 1단계: 괄호로 감싸진 URL 패턴 처리 (위치 정보와 함께)
+    parentheses_pattern = r'\((https?://[^)]+)\)'
+    for match in re.finditer(parentheses_pattern, text):
+        url_positions.append((match.start(), match.group(1)))
+    
+    # 2단계: 일반 URL 패턴 처리 (괄호로 감싸지지 않은 것들)
+    url_pattern = r'https?://[^\s<>"{}|\\^`\[\]]+'
+    for match in re.finditer(url_pattern, text):
+        # 이미 괄호 패턴으로 추출된 위치는 제외
+        start_pos = match.start()
+        is_in_parentheses = False
+        
+        for paren_match in re.finditer(parentheses_pattern, text):
+            if paren_match.start() <= start_pos <= paren_match.end():
+                is_in_parentheses = True
+                break
+        
+        if not is_in_parentheses:
+            url_positions.append((start_pos, match.group(0)))
+    
+    # 3단계: 위치 순서대로 정렬
+    url_positions.sort(key=lambda x: x[0])
+    
+    # 4단계: URL들만 추출하여 후처리 적용
     korean_particles = [
         '은', '는', '이', '가', '을', '를', '에', '에서', '로', '으로',
         '와', '과', '의', '도', '만', '까지', '부터', '보다', '처럼',
-        '마다', '조차', '라도', '라든지', '든지', '라면', '면서'
+        '마다', '조차', '라도', '라든지', '든지', '라면', '면서', '이며', '다.', '입니다.', '이다.'
     ]
     
     cleaned_urls = []
-    for url in raw_urls:
+    for position, url in url_positions:
         cleaned_url = url
         
-        # 영문 문장 끝 구두점 제거 (마침표, 쉼표, 세미콜론, 콜론, 느낌표, 물음표)
+        # 영문 문장 끝 구두점 제거
         while cleaned_url and cleaned_url[-1] in '.,;:!?':
             cleaned_url = cleaned_url[:-1]
         
-        # URL 끝에 한국어 조사가 붙어있는지 확인하고 제거
+        # 한국어 조사 제거
         for particle in korean_particles:
             if cleaned_url.endswith(particle):
                 cleaned_url = cleaned_url[:-len(particle)]
                 break
         
-        # 다시 한번 구두점 제거 (조사 제거 후에도 구두점이 남을 수 있음)
+        # 다시 한번 구두점 제거
         while cleaned_url and cleaned_url[-1] in '.,;:!?':
             cleaned_url = cleaned_url[:-1]
             
-        if cleaned_url:  # 빈 문자열이 아닌 경우만 추가
+        if cleaned_url:
             cleaned_urls.append(cleaned_url)
     
-    # 중복 제거하면서 순서 유지
+    # 5단계: 중복 제거하면서 순서 유지
     seen = set()
     unique_urls = []
     for url in cleaned_urls:
