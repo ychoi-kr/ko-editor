@@ -35,7 +35,6 @@
 
 * 웹
    * [urlchk.py](#urlchkpy) : 텍스트에서 URL을 추출하고 접근 가능성을 테스트
-   * wikidocs.py : 위키독스 책의 목차 및 본문 추출
    * wikipedia.py : 위키백과의 본문 추출
 
 * 번역
