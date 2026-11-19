@@ -28,6 +28,13 @@ def main(book_title, directory, sub_dir='merged'):
     pattern = re.compile(rf'{re.escape(book_title)}.*\.pdf')
     file_list = [file for file in os.listdir(directory) if pattern.match(file)]
     sorted_file_list = natsorted(file_list)
+    if not sorted_file_list:
+        all_pdfs = [f for f in os.listdir(directory) if f.lower().endswith('.pdf')]
+        print(f"'{book_title}'로 시작하는 PDF를 찾지 못했습니다.")
+        if all_pdfs:
+            print(f"디렉토리 내 PDF 파일: {natsorted(all_pdfs)[:10]}")
+        return
+    print(f"{len(sorted_file_list)}개 파일 발견")
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         # 원본 파일들을 로컬 임시 폴더로 복사
